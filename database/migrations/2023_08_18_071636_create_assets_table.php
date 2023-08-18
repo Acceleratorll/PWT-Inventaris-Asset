@@ -16,13 +16,13 @@ return new class extends Migration
             $table->foreignId('asset_type_id')->constrained();
             $table->foreignId('room_id')->constrained();
             $table->string('item_code')->unique();
+            $table->string('name');
             $table->date('acquition');
             $table->boolean('isMoveable');
             $table->integer('total');
             $table->date('last_move_date')->nullable();
-            $table->date('last_edit_date')->nullable();
             $table->enum('condition', ['good', 'bad']);
-            $table->date('note');
+            $table->text('note');
             $table->timestamps();
         });
     }
