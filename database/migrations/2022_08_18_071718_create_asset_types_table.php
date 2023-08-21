@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('asset_types', function (Blueprint $table) {
             $table->id();
+            $table->boolean('isMoveable');
             $table->string('name');
             $table->timestamps();
         });

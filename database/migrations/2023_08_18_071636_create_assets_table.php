@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('item_code')->unique();
             $table->string('name');
             $table->date('acquition');
-            $table->boolean('isMoveable');
             $table->integer('total');
             $table->date('last_move_date')->nullable();
             $table->enum('condition', ['good', 'bad']);

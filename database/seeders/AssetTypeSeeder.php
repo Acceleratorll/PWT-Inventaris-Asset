@@ -14,9 +14,18 @@ class AssetTypeSeeder extends Seeder
     public function run(): void
     {
         $datas = [
-            ['name' => 'Monitor'],
-            ['name' => 'Printer'],
-            ['name' => 'Kursi'],
+            [
+                'name' => 'Monitor',
+                'isMoveable' => 0,
+            ],
+            [
+                'name' => 'Printer',
+                'isMoveable' => 0,
+            ],
+            [
+                'name' => 'Kursi',
+                'isMoveable' => 1,
+            ],
         ];
 
         DB::table('asset_types')->insert($datas);

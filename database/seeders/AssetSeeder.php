@@ -20,7 +20,6 @@ class AssetSeeder extends Seeder
                 'item_code' => 'J3',
                 'name' => 'SPI',
                 'acquition' => '2023-08-19',
-                'isMoveable' => 0,
                 'total' => 3,
                 'last_move_date' => '2023-08-19',
                 'condition' => 'good',
