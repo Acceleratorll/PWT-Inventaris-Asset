@@ -24,7 +24,8 @@ class AssetController extends Controller
     public function index()
     {
         $assets = $this->assetRepositories->all();
-        return view('admin.asset.index', compact('assets'));
+        // return view('admin.asset.index', compact('assets'));
+        return view('dashboard', compact('assets'));
     }
 
     public function create()

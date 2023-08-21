@@ -39,6 +39,11 @@ class MovementRepository
         return $this->model->all();
     }
 
+    public function paginate()
+    {
+        return $this->model->with('asset', 'fromRoom', 'toRoom')->paginate(10);
+    }
+
     public function create($data)
     {
         return $this->model->create($data);

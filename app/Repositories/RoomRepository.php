@@ -31,6 +31,11 @@ class RoomRepository
         return $this->model->all();
     }
 
+    public function paginate()
+    {
+        return $this->model->with('assets')->paginate(10);
+    }
+
     public function create($data)
     {
         return $this->model->create($data);

@@ -20,7 +20,12 @@ class Movement extends Model
         return $this->belongsTo(Asset::class);
     }
 
-    public function room()
+    public function fromRoom()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function toRoom()
     {
         return $this->belongsTo(Room::class);
     }

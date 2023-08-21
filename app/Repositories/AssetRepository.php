@@ -36,7 +36,12 @@ class AssetRepository
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model->with('asset_type', 'room')->get();
+    }
+
+    public function paginate()
+    {
+        return $this->model->with('asset_type', 'room')->paginate(10);
     }
 
     public function create($data)
