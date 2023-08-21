@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoomSeeder extends Seeder
+class AssetTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,11 +14,11 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         $datas = [
-            ['name' => 'IT'],
-            ['name' => 'Keuangan'],
-            ['name' => 'SDM Umum'],
+            ['name' => 'Monitor'],
+            ['name' => 'Printer'],
+            ['name' => 'Kursi'],
         ];
 
-        DB::table('rooms')->insert($datas);
+        DB::table('asset_types')->insert($datas);
     }
 }
