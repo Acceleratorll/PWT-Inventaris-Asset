@@ -15,6 +15,11 @@ class MovementController extends Controller
         $this->movementRepositories = $movementRepositories;
     }
 
+    public function tableMovements()
+    {
+        return $this->movementRepositories
+    }
+
     public function index()
     {
         $movements = $this->movementRepositories->all();
