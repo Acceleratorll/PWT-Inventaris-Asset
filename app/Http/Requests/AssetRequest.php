@@ -22,7 +22,15 @@ class AssetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '',
+            'asset_type_id' => 'required',
+            'room_id' => 'required',
+            'item_code' => 'required',
+            'name' => 'required',
+            'acquition' => 'required',
+            'total' => 'required',
+            'last_move_date' => 'required',
+            'condition' => 'required',
+            'note' => 'nullable',
         ];
     }
 }

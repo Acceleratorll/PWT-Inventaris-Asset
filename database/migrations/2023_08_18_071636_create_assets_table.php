@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('name');
             $table->date('acquition');
             $table->integer('total');
-            $table->date('last_move_date')->nullable();
+            $table->datetime('last_move_date')->nullable();
             $table->enum('condition', ['good', 'bad']);
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

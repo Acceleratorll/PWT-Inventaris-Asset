@@ -17,7 +17,6 @@ class MovementController extends Controller
 
     public function tableMovements()
     {
-        return $this->movementRepositories
     }
 
     public function index()

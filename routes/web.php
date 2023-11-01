@@ -21,6 +21,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/types', AssetTypeController::class);
     Route::resource('/movements', MovementController::class);
     Route::resource('/rooms', RoomController::class);
+
+    Route::prefix('table')->name('table.')->group(function () {
+        Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
+    });
 });
 
 Route::middleware('auth')->group(function () {

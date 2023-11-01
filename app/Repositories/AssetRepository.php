@@ -39,9 +39,9 @@ class AssetRepository
         return $this->model->with('asset_type', 'room')->get();
     }
 
-    public function paginate()
+    public function paginate(int $no)
     {
-        return $this->model->with('asset_type', 'room')->paginate(10);
+        return $this->model->with('asset_type', 'room')->paginate($no);
     }
 
     public function create($data)

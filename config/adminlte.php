@@ -290,12 +290,6 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        // [
-        //     'type'         => 'navbar-search',
-        //     'text'         => 'search',
-        //     'topnav_right' => true,
-        // ],
         [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
@@ -307,58 +301,36 @@ return [
             'icon_color'   => 'warning',              // The initial icon color (optional).
             'label'        => 0,                      // The initial label for the badge (optional).
             'label_color'  => 'danger',               // The initial badge color (optional).
-            'url'          => 'notifications/show',   // The url to access all notifications/elements (required).
+            'url'          => '#',   // The url to access all notifications/elements (required).
             'topnav_right' => true,                   // Or "topnav => true" to place on the left (required).
             'dropdown_mode'   => true,                // Enables the dropdown mode (optional).
             'dropdown_flabel' => 'Notifications here !', // The label for the dropdown footer link (optional).
             'update_cfg'   => [
-                'url' => 'notifications/get',         // The url to periodically fetch new data (optional).
+                'url' => '#',         // The url to periodically fetch new data (optional).
                 'period' => 30,                       // The update period for get new data (in seconds, optional).
             ],
         ],
 
-        // Sidebar items:
-        // [
-        //     'type' => 'sidebar-menu-search',
-        //     'text' => 'search',
-        // ],
-        // [
-        //     'text' => 'blog',
-        //     'url'  => 'admin/blog',
-        //     'can'  => 'manage-blog',
-        // ],
         [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'nav-icon fas fa-tachometer-alt',
             'label_color' => 'success',
         ],
-        ['header' => 'product_settings'],
+        ['header' => 'assets_settings'],
         [
-            'text'    => 'Product',
+            'text'    => 'assets',
             'icon' => 'nav-icon fas fa-th',
             'submenu' => [
                 [
-                    'text'    => 'Tinta',
-                    'url'     => '#',
+                    'text'    => 'Add',
+                    'route'     => 'admin.assets.create',
                     'icon' => 'nav-icon fas fa-edit',
-                    'submenu' => [
-                        [
-                            'text' => 'Opsi Lagi',
-                            'url'  => '#',
-                        ],
-                    ],
                 ],
                 [
-                    'text'    => 'Kertas',
-                    'url'     => '#',
+                    'text'    => 'List',
+                    'route'     => 'admin.assets.index',
                     'icon' => 'nav-icon fas fa-book',
-                    'submenu' => [
-                        [
-                            'text' => 'Opsi Lagi',
-                            'url'  => '#',
-                        ],
-                    ],
                 ],
             ],
         ],

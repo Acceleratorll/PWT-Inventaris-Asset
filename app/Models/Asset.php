@@ -15,7 +15,6 @@ class Asset extends Model
         'item_code',
         'name',
         'acquition',
-        'isMoveable',
         'total',
         'last_move_date',
         'condition',
