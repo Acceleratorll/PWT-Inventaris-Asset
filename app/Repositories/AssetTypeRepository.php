@@ -23,6 +23,7 @@ class AssetTypeRepository
     {
         return $this->model
             ->where('name', 'LIKE', '%' . $term . '%')
+            ->orWhere('isMoveable', 'LIKE', '%' . $term . '%')
             ->get();
     }
 

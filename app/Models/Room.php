@@ -11,6 +11,7 @@ class Room extends Model
 
     protected $fillable = [
         'name',
+        'location',
     ];
 
     public function assets()

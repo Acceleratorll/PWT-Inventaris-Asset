@@ -14,9 +14,9 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         $datas = [
-            ['name' => 'IT'],
-            ['name' => 'Keuangan'],
-            ['name' => 'SDM Umum'],
+            ['name' => 'IT', 'location' => 'Kiri Atas'],
+            ['name' => 'Keuangan', 'location' => 'Kiri Bawah'],
+            ['name' => 'SDM Umum', 'location' => 'Kiri Kotak'],
         ];
 
         DB::table('rooms')->insert($datas);

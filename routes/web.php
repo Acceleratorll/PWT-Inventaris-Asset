@@ -22,8 +22,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/movements', MovementController::class);
     Route::resource('/rooms', RoomController::class);
 
-    Route::prefix('table')->name('table.')->group(function () {
+    Route::prefix('/table')->name('table.')->group(function () {
         Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
+    });
+
+    Route::prefix('/select')->name('select.')->group(function () {
+        Route::get('/rooms', [RoomController::class, 'selectAll'])->name('rooms');
+        Route::get('/assets', [AssetController::class, 'selectAll'])->name('assets');
+        Route::get('/types', [AssetTypeController::class, 'selectAll'])->name('asset-types');
+        Route::get('/movements', [MovementController::class, 'selectAll'])->name('movements');
     });
 });
 

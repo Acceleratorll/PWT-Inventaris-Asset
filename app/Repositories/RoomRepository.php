@@ -23,6 +23,7 @@ class RoomRepository
     {
         return $this->model
             ->where('name', 'LIKE', '%' . $term . '%')
+            ->orWhere('location', 'LIKE', '%' . $term . '%')
             ->get();
     }
 
@@ -46,6 +47,7 @@ class RoomRepository
         $room = $this->model->find($id);
         $room->update([
             'name' => $data['name'],
+            'location' => $data['location'],
         ]);
         return $room;
     }

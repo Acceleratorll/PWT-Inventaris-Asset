@@ -26,26 +26,8 @@ class AssetTypeService
             ->addColumn('name', function ($data) {
                 return $data->name;
             })
-            ->addColumn('code', function ($data) {
-                return $data->item_code;
-            })
-            ->addColumn('type', function ($data) {
-                return $data->asset_type->name;
-            })
-            ->addColumn('room', function ($data) {
-                return $data->room->name;
-            })
-            ->addColumn('total', function ($data) {
-                return $data->total;
-            })
-            ->addColumn('acquition', function ($data) {
-                return $data->acquition;
-            })
-            ->addColumn('condition', function ($data) {
-                return $data->condition;
-            })
-            ->addColumn('last_move', function ($data) {
-                return Carbon::parse($data->last_move_date)->format('D, d-m-y, G:i');
+            ->addColumn('isMoveable', function ($data) {
+                return $data->isMoveable;
             })
             ->addColumn('formatted_created_at', function ($data) {
                 return Carbon::parse($data->created_at)->format('D, d-m-y, G:i');
@@ -53,9 +35,21 @@ class AssetTypeService
             ->addColumn('formatted_updated_at', function ($data) {
                 return Carbon::parse($data->updated_at)->format('D, d-m-y, G:i');
             })
-            ->addColumn('action', 'partials.button.asset')
+            ->addColumn('action', 'partials.button.asset-type')
             ->rawColumns(['action'])
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function selectAll($term)
+    {
+        $datas = $this->repository->search($term);
+        $formattedDatas = $datas->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->name
+            ];
+        });
+        return response()->json($formattedDatas);
     }
 }

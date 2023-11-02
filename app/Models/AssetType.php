@@ -11,6 +11,7 @@ class AssetType extends Model
 
     protected $fillable = [
         'name',
+        'isMoveable',
     ];
 
     public function assets()

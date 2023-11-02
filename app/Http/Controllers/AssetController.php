@@ -34,6 +34,12 @@ class AssetController extends Controller
         return $this->assetService->tableAll();
     }
 
+    public function selectAll(Request $request)
+    {
+        $term = $request->term;
+        return $this->assetService->selectAll($term);
+    }
+
     public function create()
     {
         $types = $this->assetTypeRepositories->all();

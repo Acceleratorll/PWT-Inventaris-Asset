@@ -4,21 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AssetTypeRequest;
 use App\Repositories\AssetTypeRepository;
+use App\Services\AssetTypeService;
 use Illuminate\Http\Request;
 
 class AssetTypeController extends Controller
 {
     protected $assetTypeRepositories;
+    protected $assetTypeService;
 
-    public function __construct(AssetTypeRepository $assetTypeRepositories)
-    {
+    public function __construct(
+        AssetTypeRepository $assetTypeRepositories,
+        AssetTypeService $assetTypeService,
+    ) {
         $this->assetTypeRepositories = $assetTypeRepositories;
+        $this->assetTypeService = $assetTypeService;
     }
 
     public function index()
     {
         $types = $this->assetTypeRepositories->all();
         return view('admin.asset.index', compact('types'));
+    }
+
+    public function selectAll(Request $request)
+    {
+        $term = $request->term;
+        return $this->assetTypeService->selectAll($term);
     }
 
     public function create()

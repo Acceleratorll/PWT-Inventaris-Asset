@@ -24,6 +24,10 @@ class AssetRepository
         return $this->model
             ->where('name', 'LIKE', '%' . $term . '%')
             ->orWhere('item_code', 'LIKE', '%' . $term . '%')
+            ->orWhere('acquition', 'LIKE', '%' . $term . '%')
+            ->orWhere('total', 'LIKE', '%' . $term . '%')
+            ->orWhere('condition', 'LIKE', '%' . $term . '%')
+            ->orWhere('last_move_date', 'LIKE', '%' . $term . '%')
             ->orWhere('note', 'LIKE', '%' . $term . '%')
             ->orWhereHas('assetType', function ($query) use ($term) {
                 $query->where('name', 'LIKE', '%' . $term . '%');

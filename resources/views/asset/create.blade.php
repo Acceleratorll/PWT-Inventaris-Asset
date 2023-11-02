@@ -33,7 +33,7 @@
         <div class="form-row">
             <div class="col">
                 <div class="form-group">
-                    <label for="item_code">Item_code</label>
+                    <label for="item_code">Code</label>
                     <input class="form-control" type="text" name="item_code" id="item_code" required>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="acquition">Diterima</label>
-                    <input class="form-control" type="text" name="acquition" id="acquition" required>
+                    <input class="form-control" type="datetime-local" value="{{ now() }}" name="acquition" id="acquition" required>
                 </div>
             </div>
         </div>
@@ -65,10 +65,11 @@
         <div class="form-row">
             <div class="col">
                 <div class="form-group">
-                    <label for="room_id">Lokasi Ruangan</label>
-                    <select class="form-control" name="room_id" id="room_id" required>
+                    <label for="room_id">Pilih Ruangan</label>
+                    <select class="form-control select2" name="room_id" id="room_id" required>
+                        <option value="" selected disabled>Pilih Ruangan</option>
                         @foreach ($rooms as $room)
-                            <option value="{{ $room->id }}">{{ $room->name }}</option>
+                        <option value="{{ $room->id }}">{{ $room->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -79,6 +80,7 @@
                 <div class="form-group">
                     <label for="condition">Kondisi</label>
                     <select class="form-control" name="condition" id="condition" required>
+                        <option value=""selected disabled>Pilih Kondisi</option>
                         <option value="good">Baik</option>
                         <option value="bad">Buruk</option>
                     </select>
@@ -96,4 +98,25 @@
         <button type="submit" class="form-control btn btn-outline-success">Submit</button>
     </form>
 </div>
+@endsection
+
+@section('css')
+    
+@endsection
+
+@section('adminlte_js')
+<script src="{{ asset('/js/customSelect2.js') }}"></script>
+<script>
+    const room = document.getElementById("room_id");
+    const room_url = '{{ route("admin.select.rooms") }}';
+    const room_title = 'Pilih Ruangan';
+    const assetType = document.getElementById("asset_type_id");
+    const assetType_url = '{{ route("admin.select.asset-types") }}';
+    const assetType_title = 'Pilih Type Asset';
+    
+    $(document).ready(function() {
+        selectInput(room, room_url, room_title);
+        selectInput(assetType, assetType_url, assetType_title);
+    });
+</script>
 @endsection

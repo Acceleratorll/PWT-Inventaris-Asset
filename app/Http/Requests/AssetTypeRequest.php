@@ -23,7 +23,7 @@ class AssetTypeRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'isMoveable' => 'required|',
+            'isMoveable' => 'required',
         ];
     }
 }

@@ -9,9 +9,9 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 // window.Pusher = Pusher;
 
 import $ from "jquery";
-import select2 from "select2";
 import Swal from "sweetalert2";
 import DataTable from "datatables.net-dt";
+import select2 from "select2";
 import JSZip from "jszip";
 import PDFMake from "pdfmake";
 import "datatables.net-buttons-dt";
@@ -24,8 +24,8 @@ import "datatables.net-buttons/js/buttons.html5.mjs";
 import "datatables.net-buttons/js/buttons.print.mjs";
 
 window.$ = $;
-window.select2 = select2;
 window.Swal = Swal;
 window.DataTable = DataTable;
+window.select2 = select2();
 window.JSZip = JSZip;
 window.PDFMake = PDFMake;

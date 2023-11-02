@@ -80,6 +80,8 @@
                     <label for="condition">Kondisi</label>
                     <select class="form-control" name="condition" id="condition" required>
                         <option value="{{ $asset->condition }}">{{ $asset->condition }}</option>
+                        <option value="good">Good</option>
+                        <option value="bad">Bad</option>
                     </select>
                 </div>
             </div>
@@ -95,4 +97,21 @@
         <button type="submit" class="form-control btn btn-outline-success">Submit</button>
     </form>
 </div>
+@endsection
+
+@section('adminlte_js')
+<script src="{{ asset('/js/customSelect2.js') }}"></script>
+    <script>
+        const room = document.getElementById("room_id");
+        const room_url = '{{ route("admin.select.rooms") }}';
+        const room_title = 'Pilih Ruangan';
+        const assetType = document.getElementById("asset_type_id");
+        const assetType_url = '{{ route("admin.select.asset-types") }}';
+        const assetType_title = 'Pilih Type Asset';
+        
+        $(document).ready(function() {
+            selectInput(room, room_url, room_title);
+            selectInput(assetType, assetType_url, assetType_title);
+        });
+    </script>
 @endsection

@@ -57,6 +57,18 @@ class AssetService
             ->make(true);
     }
 
+    public function selectAll($term)
+    {
+        $datas = $this->repository->search($term);
+        $formattedDatas = $datas->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->name
+            ];
+        });
+        return response()->json($formattedDatas);
+    }
+
     public function search($term)
     {
         return $this->repository->search($term);

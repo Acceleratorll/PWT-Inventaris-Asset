@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoomRequest;
 use App\Repositories\RoomRepository;
+use App\Services\RoomService;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
     protected $roomRepositories;
+    protected $roomService;
 
-    public function __construct(RoomRepository $roomRepositories)
-    {
+    public function __construct(
+        RoomRepository $roomRepositories,
+        RoomService $roomService,
+    ) {
         $this->roomRepositories = $roomRepositories;
+        $this->roomService = $roomService;
+    }
+
+    public function selectAll(Request $request)
+    {
+        $term = $request->term;
+        return $this->roomService->selectAll($term);
     }
 
     public function index()

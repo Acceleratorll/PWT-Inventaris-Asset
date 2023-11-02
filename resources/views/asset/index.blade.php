@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+<a href="{{ route('admin.assets.create') }}" class="btn btn-outline-primary">Add Asset</a>
 <table class="table table-striped" style="width:100%" id="table" name="table" class="display">
     <thead class="thead-dark text-center">
         <tr>
@@ -43,6 +44,12 @@
 
 @section('css')
 <style>
+    .dataTables_filter {
+   width: 50%;
+   float: right;
+   text-align: right;
+}
+
 </style>
 @stop
 
@@ -73,13 +80,6 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         searchable: true,
-        dom: 'Blfrtip',
-        buttons: [
-            'excel',
-            'colvis',
-            'pdf',
-            'print',
-        ],
         paging: false,
         scrollCollapse: true,
         scrollX: true,
