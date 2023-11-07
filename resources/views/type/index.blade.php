@@ -25,7 +25,6 @@
             <th>isMoveable</th>
             <th>Terakhir Update</th>
             <th>Di Buat</th>
-            <th>Actions</th>
         </tr>
     </tfoot>
 </table>
@@ -79,12 +78,9 @@ $(document).ready(function() {
         table
             .column( $(this).data('index') )
             .search( this.value )
+            .order([])
             .draw();
     });
-
-    table
-    .order([])
-    .draw();
 });
 </script>
 @stop

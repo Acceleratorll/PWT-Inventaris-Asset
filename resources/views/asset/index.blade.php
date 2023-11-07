@@ -92,7 +92,7 @@ $(document).ready(function() {
         },
     });
 
-    $(table.container() ).on( 'keyup', 'tfoot input', function () {
+    $(table.table().container() ).on( 'keyup', 'tfoot input', function () {
         table
             .column( $(this).data('index') )
             .search( this.value )

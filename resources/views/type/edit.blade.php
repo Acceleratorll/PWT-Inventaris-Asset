@@ -12,15 +12,13 @@
         @csrf
         @method('PUT')
         <div class="form-row">
-            <div class="col">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="name">Nama Type</label>
                     <input class="form-control" value="{{ $type->name }}" type="text" name="name" id="name" required>
                 </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="col">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="isMoveable">isMoveable</label>
                     <select class="form-control" name="isMoveable" id="isMoveable" required>

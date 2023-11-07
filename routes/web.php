@@ -24,7 +24,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::prefix('/table')->name('table.')->group(function () {
         Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
-        Route::get('/types', [AssetController::class, 'tableAll'])->name('types');
+        Route::get('/types', [AssetTypeController::class, 'tableAll'])->name('types');
         Route::get('/rooms', [RoomController::class, 'tableAll'])->name('rooms');
         Route::get('/movements', [MovementController::class, 'tableAll'])->name('movements');
     });

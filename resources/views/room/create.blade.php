@@ -13,8 +13,8 @@
         <div class="form-row">
             <div class="col">
                 <div class="form-group">
-                    <label for="name">Nama Tipe</label>
-                    <input class="form-control" type="text" name="name" id="name" required>
+                    <label for="name">Nama Ruangan</label>
+                    <input class="form-control" type="text" name="name" id="name" placeholder="Masukkan Nama Ruangan" required>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="location">Lokasi</label>
-                    <input class="form-control" type="text" name="location" id="location" required>
+                    <input class="form-control" type="text" name="location" id="location" placeholder="Masukkan Letak Lokasi" required>
                 </div>
             </div>
         </div>

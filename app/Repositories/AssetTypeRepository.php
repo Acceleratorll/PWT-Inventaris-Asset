@@ -29,12 +29,12 @@ class AssetTypeRepository
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model->with('assets')->get();
     }
 
-    public function paginate()
+    public function paginate($no)
     {
-        return $this->model->with('assets')->paginate(10);
+        return $this->model->with('assets')->paginate($no);
     }
 
     public function create($data)

@@ -34,19 +34,19 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = $this->roomRepositories->all();
-        return view('admin.asset.index', compact('rooms'));
+        return view('room.index', compact('rooms'));
     }
 
     public function create()
     {
-        return view('admin.assets.create', compact(['types', 'rooms']));
+        return view('room.create');
     }
 
     public function store(RoomRequest $roomRequest)
     {
         $input = $roomRequest->validated();
         $this->roomRepositories->create($input);
-        return redirect()->route('admin.assets.index');
+        return redirect()->route('admin.rooms.index');
     }
 
     public function search(Request $request)
@@ -58,20 +58,20 @@ class RoomController extends Controller
 
     public function edit($id)
     {
-        $asset = $this->roomRepositories->find($id);
-        return view('admin.assets.edit', compact('asset'));
+        $room = $this->roomRepositories->find($id);
+        return view('room.edit', compact('room'));
     }
 
     public function update(RoomRequest $roomRequest, $id)
     {
         $input = $roomRequest->validated();
         $this->roomRepositories->update($id, $input);
-        return redirect()->route('admin.asset.index');
+        return redirect()->route('admin.rooms.index');
     }
 
     public function delete($id)
     {
         $this->roomRepositories->delete($id);
-        return redirect()->route('admin.assets.index');
+        return redirect()->route('admin.rooms.index');
     }
 }

@@ -15,7 +15,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="name">Nama Room</label>
-                    <input class="form-control" value="{{ $room->name }}" type="text" name="name" id="name" required>
+                    <input class="form-control" placeholder="Masukkan Nama Ruangan" value="{{ $room->name }}" type="text" name="name" id="name" required>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="location">Lokasi</label>
-                    <input class="form-control" value="{{ $room->location }}" type="text" name="location" id="location" required>
+                    <input class="form-control" placeholder="Masukkan Letak Lokasi" value="{{ $room->location }}" type="text" name="location" id="location" required>
                 </div>
             </div>
         </div>

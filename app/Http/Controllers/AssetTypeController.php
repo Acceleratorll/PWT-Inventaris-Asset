@@ -26,6 +26,11 @@ class AssetTypeController extends Controller
         return view('type.index', compact('types'));
     }
 
+    public function tableAll()
+    {
+        return $this->assetTypeService->tableAll();
+    }
+
     public function selectAll(Request $request)
     {
         $term = $request->term;
@@ -34,7 +39,7 @@ class AssetTypeController extends Controller
 
     public function create()
     {
-        return view('type.create', compact(['types', 'rooms']));
+        return view('type.create');
     }
 
     public function store(AssetTypeRequest $assetTypeRequest)
@@ -64,7 +69,7 @@ class AssetTypeController extends Controller
         return redirect()->route('admin.types.index');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->assetTypeRepositories->delete($id);
         return redirect()->route('admin.types.index');
