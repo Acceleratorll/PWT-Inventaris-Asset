@@ -9,10 +9,12 @@ use Yajra\DataTables\Facades\DataTables;
 class AssetService
 {
     protected $repository;
+    protected $roomService;
 
-    public function __construct(AssetRepository $repository)
+    public function __construct(AssetRepository $repository, RoomService $roomService)
     {
         $this->repository = $repository;
+        $this->roomService = $roomService;
     }
 
     public function getById($id)
@@ -36,11 +38,11 @@ class AssetService
             ->addColumn('type', function ($data) {
                 return $data->asset_type->name;
             })
-            ->addColumn('room', function ($data) {
-                return $data->room->name;
-            })
             ->addColumn('total', function ($data) {
                 return $data->total;
+            })
+            ->addColumn('note', function ($data) {
+                return $data->note;
             })
             ->addColumn('last_move', function ($data) {
                 return Carbon::parse($data->last_move_date)->format('D, d-m-y, G:i');
@@ -69,6 +71,19 @@ class AssetService
         return response()->json($formattedDatas);
     }
 
+    public function showRooms($id)
+    {
+        $asset = $this->repository->find($id);
+
+        if ($asset) {
+            $rooms = $asset->rooms()->withPivot('qty')->get();
+
+            return response()->json($rooms);
+        }
+
+        return response()->json(['error' => 'Asset "pc" not found.']);
+    }
+
     public function search($term)
     {
         return $this->repository->search($term);
@@ -86,7 +101,7 @@ class AssetService
 
     public function create($data)
     {
-        return $this->repository->create($data);
+        $asset = $this->repository->create($data);
     }
 
     public function update($id, $data)

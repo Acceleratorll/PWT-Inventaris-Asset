@@ -51,4 +51,27 @@ class RoomService
         });
         return response()->json($formattedDatas);
     }
+
+    public function showAssets($id)
+    {
+        $data = $this->repository->find($id);
+
+        if ($data) {
+            $assets = $data->assets()->withPivot('qty')->get();
+
+            return response()->json($assets);
+        }
+
+        return response()->json(['error' => 'Room not found.']);
+    }
+
+    public function addNewAsset($id, $datas)
+    {
+        $data = $this->repository->find($id);
+
+        return $data->assets()->updateOrCreate(
+            ['asset_id' => $id],
+            ['quantity' => $datas->qty]
+        );
+    }
 }

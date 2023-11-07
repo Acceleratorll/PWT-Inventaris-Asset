@@ -76,7 +76,7 @@ class AssetController extends Controller
         return redirect()->route('admin.assets.index')->with('success', 'Asset has been successfully updated!');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->assetService->delete($id);
         return redirect()->route('admin.assets.index');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Room extends Model
 {
@@ -14,13 +15,8 @@ class Room extends Model
         'location',
     ];
 
-    public function assets()
+    public function assets(): BelongsToMany
     {
-        return $this->hasMany(Asset::class);
-    }
-
-    public function movements()
-    {
-        return $this->hasMany(Movement::class);
+        return $this->belongsToMany(Asset::class, 'asset_rooms', 'asset_id', 'room_id', 'qty')->withPivot('qty')->withTimestamps();
     }
 }

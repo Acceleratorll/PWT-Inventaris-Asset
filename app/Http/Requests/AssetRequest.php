@@ -23,7 +23,7 @@ class AssetRequest extends FormRequest
     {
         return [
             'asset_type_id' => 'required',
-            'room_id' => 'required',
+            // 'room_id' => 'required',
             'item_code' => 'required',
             'name' => 'required',
             'acquition' => 'required',

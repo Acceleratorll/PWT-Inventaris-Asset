@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Asset extends Model
 {
@@ -11,7 +14,6 @@ class Asset extends Model
 
     protected $fillable = [
         'asset_type_id',
-        'room_id',
         'item_code',
         'name',
         'acquition',
@@ -21,18 +23,18 @@ class Asset extends Model
         'note',
     ];
 
-    public function movements()
-    {
-        return $this->hasMany(Movement::class);
-    }
-
-    public function asset_type()
+    public function asset_type(): BelongsTo
     {
         return $this->belongsTo(AssetType::class);
     }
 
-    public function room()
+    public function rooms(): BelongsToMany
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsToMany(Room::class, 'asset_rooms', 'asset_id', 'room_id', 'qty')->withPivot('qty')->withTimestamps();
+    }
+
+    public function movements(): HasMany
+    {
+        return $this->hasMany(Movement::class);
     }
 }

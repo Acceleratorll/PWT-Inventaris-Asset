@@ -14,6 +14,7 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         $datas = [
+            ['name' => 'Gudang/Pabrik', 'location' => ''],
             ['name' => 'IT', 'location' => 'Kiri Atas'],
             ['name' => 'Keuangan', 'location' => 'Kiri Bawah'],
             ['name' => 'SDM Umum', 'location' => 'Kiri Kotak'],

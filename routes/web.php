@@ -24,12 +24,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::prefix('/table')->name('table.')->group(function () {
         Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
+        Route::get('/types', [AssetController::class, 'tableAll'])->name('types');
+        Route::get('/rooms', [RoomController::class, 'tableAll'])->name('rooms');
+        Route::get('/movements', [MovementController::class, 'tableAll'])->name('movements');
     });
 
     Route::prefix('/select')->name('select.')->group(function () {
         Route::get('/rooms', [RoomController::class, 'selectAll'])->name('rooms');
         Route::get('/assets', [AssetController::class, 'selectAll'])->name('assets');
-        Route::get('/types', [AssetTypeController::class, 'selectAll'])->name('asset-types');
+        Route::get('/types', [AssetTypeController::class, 'selectAll'])->name('types');
         Route::get('/movements', [MovementController::class, 'selectAll'])->name('movements');
     });
 });

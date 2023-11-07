@@ -34,6 +34,20 @@ class MovementRepository
             ->get();
     }
 
+    public function getByAsset($id)
+    {
+        return $this->model->where('asset_id', $id)
+            ->with(['fromRoom', 'toRoom'])
+            ->get();
+    }
+
+    public function getByRoom($id)
+    {
+        return $this->model->where('to_room_id', $id)
+            ->with(['fromRoom', 'toRoom', 'asset'])
+            ->get();
+    }
+
     public function all()
     {
         return $this->model->all();

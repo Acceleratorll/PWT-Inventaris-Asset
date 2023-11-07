@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_type_id')->constrained();
-            $table->foreignId('room_id')->constrained();
+            // $table->foreignId('room_id')->constrained();
             $table->string('item_code')->unique();
             $table->string('name');
             $table->date('acquition');

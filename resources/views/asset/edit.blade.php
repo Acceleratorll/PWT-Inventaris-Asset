@@ -26,7 +26,7 @@
                     <select class="form-control" name="asset_type_id" id="asset_type_id" required>
                         <option value="{{ $asset->asset_type->id }}">{{ $asset->asset_type->name }}</option>
                         @foreach ($types as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                            <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -64,22 +64,22 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        {{-- <div class="form-row">
             <div class="col">
                 <div class="form-group">
                     <label for="room_id">Lokasi Ruangan</label>
                     <select class="form-control" name="room_id" id="room_id" required>
-                        <option value="{{ $asset->room_id }}">{{ $asset->room->name }}</option>
+                        <option value="{{ $asset->room_id }}" selected>{{ $asset->room->name }}</option>
                     </select>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="form-row">
             <div class="col">
                 <div class="form-group">
                     <label for="condition">Kondisi</label>
                     <select class="form-control" name="condition" id="condition" required>
-                        <option value="{{ $asset->condition }}">{{ $asset->condition }}</option>
+                        <option value="{{ $asset->condition }}" selected>{{ $asset->condition }}</option>
                         <option value="good">Good</option>
                         <option value="bad">Bad</option>
                     </select>
@@ -102,15 +102,15 @@
 @section('adminlte_js')
 <script src="{{ asset('/js/customSelect2.js') }}"></script>
     <script>
-        const room = document.getElementById("room_id");
-        const room_url = '{{ route("admin.select.rooms") }}';
-        const room_title = 'Pilih Ruangan';
+        // const room = document.getElementById("room_id");
+        // const room_url = '{{ route("admin.select.rooms") }}';
+        // const room_title = 'Pilih Ruangan';
         const assetType = document.getElementById("asset_type_id");
-        const assetType_url = '{{ route("admin.select.asset-types") }}';
+        const assetType_url = '{{ route("admin.select.types") }}';
         const assetType_title = 'Pilih Type Asset';
         
         $(document).ready(function() {
-            selectInput(room, room_url, room_title);
+            // selectInput(room, room_url, room_title);
             selectInput(assetType, assetType_url, assetType_title);
         });
     </script>

@@ -23,7 +23,7 @@ class AssetTypeController extends Controller
     public function index()
     {
         $types = $this->assetTypeRepositories->all();
-        return view('admin.asset.index', compact('types'));
+        return view('type.index', compact('types'));
     }
 
     public function selectAll(Request $request)
@@ -34,14 +34,14 @@ class AssetTypeController extends Controller
 
     public function create()
     {
-        return view('admin.assets.create', compact(['types', 'rooms']));
+        return view('type.create', compact(['types', 'rooms']));
     }
 
     public function store(AssetTypeRequest $assetTypeRequest)
     {
         $input = $assetTypeRequest->validated();
         $this->assetTypeRepositories->create($input);
-        return redirect()->route('admin.assets.index');
+        return redirect()->route('admin.types.index');
     }
 
     public function search(Request $request)
@@ -53,20 +53,20 @@ class AssetTypeController extends Controller
 
     public function edit($id)
     {
-        $asset = $this->assetTypeRepositories->find($id);
-        return view('admin.assets.edit', compact('asset'));
+        $type = $this->assetTypeRepositories->find($id);
+        return view('type.edit', compact('type'));
     }
 
     public function update(AssetTypeRequest $assetTypeRequest, $id)
     {
         $input = $assetTypeRequest->validated();
         $this->assetTypeRepositories->update($id, $input);
-        return redirect()->route('admin.asset.index');
+        return redirect()->route('admin.types.index');
     }
 
     public function delete($id)
     {
         $this->assetTypeRepositories->delete($id);
-        return redirect()->route('admin.assets.index');
+        return redirect()->route('admin.types.index');
     }
 }

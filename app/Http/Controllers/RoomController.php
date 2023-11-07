@@ -20,6 +20,11 @@ class RoomController extends Controller
         $this->roomService = $roomService;
     }
 
+    public function tableAll()
+    {
+        return $this->roomService->tableAll();
+    }
+
     public function selectAll(Request $request)
     {
         $term = $request->term;

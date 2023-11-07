@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="form-row">
+        <div class="form-row">
             <div class="col">
                 <div class="form-group">
                     <label for="room_id">Pilih Ruangan</label>
@@ -74,7 +74,7 @@
                     </select>
                 </div>
             </div>
-        </div> --}}
+        </div>
         <div class="form-row">
             <div class="col">
                 <div class="form-group">
@@ -91,7 +91,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="note">Catatan</label>
-                    <textarea class="form-control" name="note" id="note"></textarea>
+                    <textarea class="form-control" name="note" id="note" required></textarea>
                 </div>
             </div>
         </div>
@@ -107,15 +107,15 @@
 @section('adminlte_js')
 <script src="{{ asset('/js/customSelect2.js') }}"></script>
 <script>
-    // const room = document.getElementById("room_id");
-    // const room_url = '{{ route("admin.select.rooms") }}';
-    // const room_title = 'Pilih Ruangan';
+    const room = document.getElementById("room_id");
+    const room_url = '{{ route("admin.select.rooms") }}';
+    const room_title = 'Pilih Ruangan';
     const assetType = document.getElementById("asset_type_id");
-    const assetType_url = '{{ route("admin.select.types") }}';
+    const assetType_url = '{{ route("admin.select.asset-types") }}';
     const assetType_title = 'Pilih Type Asset';
     
     $(document).ready(function() {
-        // selectInput(room, room_url, room_title);
+        selectInput(room, room_url, room_title);
         selectInput(assetType, assetType_url, assetType_title);
     });
 </script>

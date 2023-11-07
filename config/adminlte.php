@@ -334,6 +334,54 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'movements',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text'    => 'Add',
+                    'route'     => 'admin.movements.create',
+                    'icon' => 'nav-icon fas fa-edit',
+                ],
+                [
+                    'text'    => 'List',
+                    'route'     => 'admin.movements.index',
+                    'icon' => 'nav-icon fas fa-book',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'asset_types',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text'    => 'Add',
+                    'route'     => 'admin.types.create',
+                    'icon' => 'nav-icon fas fa-edit',
+                ],
+                [
+                    'text'    => 'List',
+                    'route'     => 'admin.types.index',
+                    'icon' => 'nav-icon fas fa-book',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'rooms',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text'    => 'Add',
+                    'route'     => 'admin.rooms.create',
+                    'icon' => 'nav-icon fas fa-edit',
+                ],
+                [
+                    'text'    => 'List',
+                    'route'     => 'admin.rooms.index',
+                    'icon' => 'nav-icon fas fa-book',
+                ],
+            ],
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

@@ -32,7 +32,7 @@ class AssetRepository
             ->orWhereHas('assetType', function ($query) use ($term) {
                 $query->where('name', 'LIKE', '%' . $term . '%');
             })
-            ->orWhereHas('room', function ($query) use ($term) {
+            ->orWhereHas('rooms', function ($query) use ($term) {
                 $query->where('name', 'LIKE', '%' . $term . '%');
             })
             ->get();
@@ -40,12 +40,12 @@ class AssetRepository
 
     public function all()
     {
-        return $this->model->with('asset_type', 'room')->get();
+        return $this->model->with('asset_type', 'rooms')->get();
     }
 
     public function paginate(int $no)
     {
-        return $this->model->with('asset_type', 'room')->paginate($no);
+        return $this->model->with('asset_type', 'rooms')->paginate($no);
     }
 
     public function create($data)
@@ -58,7 +58,6 @@ class AssetRepository
         $asset = $this->model->find($id);
         $asset->update([
             'asset_type_id' => $data['asset_type_id'],
-            'room_id' => $data['room_id'],
             'item_code' => $data['item_code'],
             'name' => $data['name'],
             'acquition' => $data['acquition'],
@@ -72,7 +71,7 @@ class AssetRepository
 
     public function delete($id)
     {
-        $asset = $this->model->find($id);
+        $asset = $this->model->findOrFail($id);
         return $asset->delete();
     }
 }

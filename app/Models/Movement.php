@@ -13,6 +13,7 @@ class Movement extends Model
         'asset_id',
         'from_room_id',
         'to_room_id',
+        'qty',
     ];
 
     public function asset()
@@ -22,11 +23,11 @@ class Movement extends Model
 
     public function fromRoom()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class, 'from_room_id');
     }
 
     public function toRoom()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class, 'to_room_id');
     }
 }
