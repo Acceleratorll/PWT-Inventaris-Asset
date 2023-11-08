@@ -6,7 +6,9 @@ use App\Http\Requests\AssetRequest;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\RoomRepository;
 use App\Services\AssetService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AssetController extends Controller
 {
@@ -24,7 +26,7 @@ class AssetController extends Controller
         $this->roomRepositories = $roomRepository;
     }
 
-    public function index()
+    public function index(): View
     {
         return view('asset.index');
     }
@@ -40,7 +42,12 @@ class AssetController extends Controller
         return $this->assetService->selectAll($term);
     }
 
-    public function create()
+    public function show($id): JsonResponse
+    {
+        return response()->json($this->assetService->find($id));
+    }
+
+    public function create(): View
     {
         $types = $this->assetTypeRepositories->all();
         $rooms = $this->roomRepositories->all();
@@ -54,14 +61,14 @@ class AssetController extends Controller
         return redirect()->route('admin.assets.index');
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $term = $request->input('term');
         $results = $this->assetService->search($term);
         return response()->json($results);
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $types = $this->assetTypeRepositories->all();
         $rooms = $this->roomRepositories->all();

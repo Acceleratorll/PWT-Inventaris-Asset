@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('asset_id')->constrained();
             $table->unsignedBigInteger('from_room_id');
             $table->unsignedBigInteger('to_room_id');
+            $table->integer('qty');
             $table->timestamps();
 
             $table->foreign('from_room_id')->references('id')->on('rooms');

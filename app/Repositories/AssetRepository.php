@@ -16,12 +16,12 @@ class AssetRepository
 
     public function find($id)
     {
-        return $this->model->find($id);
+        return $this->model->with('asset_type', 'rooms', 'movements')->findOrFail($id);
     }
 
     public function search($term)
     {
-        return $this->model
+        return $this->model->with('asset_type', 'rooms', 'movements')
             ->where('name', 'LIKE', '%' . $term . '%')
             ->orWhere('item_code', 'LIKE', '%' . $term . '%')
             ->orWhere('acquition', 'LIKE', '%' . $term . '%')
@@ -29,10 +29,7 @@ class AssetRepository
             ->orWhere('condition', 'LIKE', '%' . $term . '%')
             ->orWhere('last_move_date', 'LIKE', '%' . $term . '%')
             ->orWhere('note', 'LIKE', '%' . $term . '%')
-            ->orWhereHas('assetType', function ($query) use ($term) {
-                $query->where('name', 'LIKE', '%' . $term . '%');
-            })
-            ->orWhereHas('rooms', function ($query) use ($term) {
+            ->orWhereHas('asset_type', function ($query) use ($term) {
                 $query->where('name', 'LIKE', '%' . $term . '%');
             })
             ->get();

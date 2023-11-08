@@ -74,4 +74,9 @@ class RoomService
             ['quantity' => $datas->qty]
         );
     }
+
+    public function find($id)
+    {
+        return $this->repository->find($id);
+    }
 }

@@ -102,6 +102,8 @@ class AssetService
     public function create($data)
     {
         $asset = $this->repository->create($data);
+        $room = $this->roomService->find(1);
+        return $asset->rooms()->attach($room, ['qty' => $data['total']]);
     }
 
     public function update($id, $data)

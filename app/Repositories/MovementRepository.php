@@ -31,13 +31,16 @@ class MovementRepository
             ->orWhereHas('toRoom', function ($query) use ($term) {
                 $query->where('name', 'LIKE', '%' . $term . '%');
             })
+            ->orWhereHas('qty', function ($query) use ($term) {
+                $query->where('qty', 'LIKE', '%' . $term . '%');
+            })
             ->get();
     }
 
     public function getByAsset($id)
     {
         return $this->model->where('asset_id', $id)
-            ->with(['fromRoom', 'toRoom'])
+            ->with(['fromRoom', 'toRoom', 'asset'])
             ->get();
     }
 
@@ -53,9 +56,9 @@ class MovementRepository
         return $this->model->all();
     }
 
-    public function paginate()
+    public function paginate($no)
     {
-        return $this->model->with('asset', 'fromRoom', 'toRoom')->paginate(10);
+        return $this->model->with('asset', 'fromRoom', 'toRoom')->paginate($no);
     }
 
     public function create($data)
@@ -70,6 +73,7 @@ class MovementRepository
             'asset_id' => $data['asset_id'],
             'from_room_id' => $data['from_room_id'],
             'to_room_id' => $data['to_room_id'],
+            'qty' => $data['qty'],
         ]);
         return $movement;
     }

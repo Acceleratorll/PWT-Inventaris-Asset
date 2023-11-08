@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\AssetType;
 use App\Models\Movement;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $movements = Movement::distinct('asset_id')->latest('created_at')->get();
-        return view('dashboard', compact('movements'));
+        return view('dashboard');
     }
 }

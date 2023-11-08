@@ -30,7 +30,7 @@ class Asset extends Model
 
     public function rooms(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'asset_rooms', 'asset_id', 'room_id', 'qty')->withPivot('qty')->withTimestamps();
+        return $this->belongsToMany(Room::class, 'asset_room')->withPivot('qty')->withTimestamps();
     }
 
     public function movements(): HasMany

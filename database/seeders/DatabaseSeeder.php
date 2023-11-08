@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             RoomSeeder::class,
             AssetSeeder::class,
+            AssetRoomSeeder::class,
         ]);
     }
 }

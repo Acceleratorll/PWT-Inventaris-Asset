@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetTypeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
@@ -12,9 +13,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/assets', AssetController::class);

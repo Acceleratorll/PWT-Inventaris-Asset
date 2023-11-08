@@ -1,7 +1,7 @@
 <a href="{{ route('admin.assets.edit', ['asset' => $id]) }}" data-original-title="Edit" class="edit btn btn-success edit">
     Edit
 </a>
-<button id="show-outgoing-products" data-id="{{ $id }}" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+<button id="details" data-id="{{ $id }}" data-name="{{ $name }}" data-original-title="Details" class="details btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
     Details
 </button>
 
@@ -55,6 +55,36 @@
                         },
                     });
                 }
+            });
+        });
+
+        $('.details').off().on('click', function(){
+            var detailButton = $(this);
+            var defaultId = detailButton.data('id');
+            var defaultName = detailButton.data('name');
+            console.log(defaultId);
+            $.ajax({
+                type: 'GET',
+                url: `{{ route("admin.assets.show", ["asset" => ":assetId"]) }}`.replace(':assetId', defaultId),
+                success: function (response) {
+                    console.log(response);
+                    var content = '<ul>';
+                    $.each(response.rooms, function(index, room) {
+                        content += '<li>Rooms ' + room.name + ' jumlah asset: '+ room.pivot.qty +'</li>';
+                        content += '<div class="divider"></div>';
+                    });
+                    content += '</ul>';
+                    
+                    Swal.fire({
+                        title: defaultName+' Rooms List',
+                        icon: 'info',
+                        html: content,
+                    });
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Failed to See the Details of Asset', 'error');
+                },
             });
         });
     });
