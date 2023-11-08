@@ -49,7 +49,6 @@
 @section('js')
 <script>
 $(document).ready(function() {
-
     if ('{{ Session::has('error') }}') {
         Swal.fire({
             icon: 'error',
@@ -79,7 +78,7 @@ $(document).ready(function() {
     $('#table tfoot th').each( function (i) {
         var title = $('#table thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="'+title+'" data-index="'+i+'" />' );
-    } );
+    });
     
     var table = $('#table').DataTable({
         processing: true,
@@ -101,12 +100,9 @@ $(document).ready(function() {
         table
             .column( $(this).data('index') )
             .search( this.value )
+            .order([])
             .draw();
     });
-
-    table
-    .order([])
-    .draw();
 });
 </script>
 @stop

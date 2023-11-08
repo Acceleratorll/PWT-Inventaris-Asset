@@ -61,6 +61,22 @@
     const from_room_url = '{{ route("admin.select.rooms") }}';
     
     $(document).ready(function() {
+        if ('{{ Session::has('error') }}') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ Session::get('error') }}',
+        });
+    }
+
+    if ('{{ Session::has('success') }}') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('success') }}',
+        });
+    }
+    
         selectInput(to_room, to_room_url, to_room_title);
         selectInput(from_room, from_room_url, from_room_title);
         selectInput(asset, asset_url, asset_title);

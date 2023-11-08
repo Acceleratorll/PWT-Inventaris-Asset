@@ -53,6 +53,22 @@
 @section('adminlte_js')
 <script src="{{ asset('/js/customSelect2.js') }}"></script>
     <script>
+        if ('{{ Session::has('error') }}') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ Session::get('error') }}',
+        });
+    }
+
+    if ('{{ Session::has('success') }}') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('success') }}',
+        });
+    }
+    
         const asset = document.getElementById("asset_id");
         const asset_url = '{{ route("admin.select.assets") }}';
         const asset_title = 'Pilih Asset';

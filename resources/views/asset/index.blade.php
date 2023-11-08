@@ -57,6 +57,22 @@
 
 <script> 
 $(document).ready(function() {
+    if ('{{ Session::has('error') }}') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ Session::get('error') }}',
+        });
+    }
+
+    if ('{{ Session::has('success') }}') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('success') }}',
+        });
+    }
+    
     var columns = [
         { data: 'name', name: 'name' },
         { data: 'code', name: 'code' },

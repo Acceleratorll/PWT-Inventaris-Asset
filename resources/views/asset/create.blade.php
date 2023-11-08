@@ -107,15 +107,27 @@
 @section('adminlte_js')
 <script src="{{ asset('/js/customSelect2.js') }}"></script>
 <script>
-    // const room = document.getElementById("room_id");
-    // const room_url = '{{ route("admin.select.rooms") }}';
-    // const room_title = 'Pilih Ruangan';
     const assetType = document.getElementById("asset_type_id");
     const assetType_url = '{{ route("admin.select.types") }}';
     const assetType_title = 'Pilih Type Asset';
     
     $(document).ready(function() {
-        // selectInput(room, room_url, room_title);
+        if ('{{ Session::has('error') }}') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ Session::get('error') }}',
+        });
+    }
+
+    if ('{{ Session::has('success') }}') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('success') }}',
+        });
+    }
+    
         selectInput(assetType, assetType_url, assetType_title);
     });
 </script>
