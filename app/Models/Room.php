@@ -17,6 +17,6 @@ class Room extends Model
 
     public function assets(): BelongsToMany
     {
-        return $this->belongsToMany(Asset::class, 'asset_room')->withPivot('qty')->withTimestamps();
+        return $this->belongsToMany(Asset::class, 'asset_room')->withPivot('qty', 'condition')->withTimestamps();
     }
 }

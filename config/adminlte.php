@@ -328,6 +328,11 @@ return [
                     'icon' => 'nav-icon fas fa-edit',
                 ],
                 [
+                    'text'    => 'Add Stock',
+                    'route'     => 'admin.asset.stock.create',
+                    'icon' => 'nav-icon fas fa-edit',
+                ],
+                [
                     'text'    => 'List',
                     'route'     => 'admin.assets.index',
                     'icon' => 'nav-icon fas fa-book',

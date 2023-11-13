@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AssetRequest;
+use App\Http\Requests\MovementRequest;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\RoomRepository;
 use App\Services\AssetService;
@@ -44,7 +45,9 @@ class AssetController extends Controller
 
     public function show($id): JsonResponse
     {
-        return response()->json($this->assetService->find($id));
+        $asset = $this->assetService->find($id);
+        $asset = $asset->rooms()->get()->unique('id');
+        return response()->json($asset);
     }
 
     public function create(): View
@@ -57,8 +60,12 @@ class AssetController extends Controller
     public function store(AssetRequest $assetRequest)
     {
         $input = $assetRequest->validated();
+        $checkTotal = $this->assetService->checkQty($input['qty_good'], $input['qty_bad'], $input['total']);
+        if ($checkTotal === false) {
+            return redirect()->back()->with('error', 'Pastikan memasukkan Total yang benar');
+        }
         $this->assetService->create($input);
-        return redirect()->route('admin.assets.index');
+        return redirect()->route('admin.assets.index')->with('success' . 'Asset berhasil dibuat');
     }
 
     public function search(Request $request): JsonResponse

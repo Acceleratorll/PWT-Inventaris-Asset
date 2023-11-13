@@ -38,11 +38,10 @@
 @section('css')
 <style>
     .dataTables_filter {
-   width: 50%;
-   float: right;
-   text-align: right;
-}
-
+        width: 50%;
+        float: right;
+        text-align: right;
+     }
 </style>
 @stop
 

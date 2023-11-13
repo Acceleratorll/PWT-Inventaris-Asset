@@ -69,7 +69,7 @@
                 success: function (response) {
                     console.log(response);
                     var content = '<ul>';
-                    $.each(response.rooms, function(index, room) {
+                    $.each(response, function(index, room) {
                         content += '<li>Rooms ' + room.name + ' jumlah asset: '+ room.pivot.qty +'</li>';
                         content += '<div class="divider"></div>';
                     });

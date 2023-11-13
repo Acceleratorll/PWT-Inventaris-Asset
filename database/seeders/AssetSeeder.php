@@ -21,7 +21,6 @@ class AssetSeeder extends Seeder
                 'acquition' => '2023-08-19',
                 'total' => 100,
                 'last_move_date' => '2023-08-19',
-                'condition' => 'good',
                 'note' => '',
             ],
         ];

@@ -51,6 +51,21 @@ class MovementRepository
             ->get();
     }
 
+    public function getNullFromRoom()
+    {
+        return $this->model->where('from_room_id', null)
+            ->with(['fromRoom', 'toRoom', 'asset'])
+            ->get();
+    }
+
+    public function getByAssetAndFromRoom($asset, $from_room)
+    {
+        return $this->model->where('from_room_id', $from_room)
+            ->where('asset_id', $asset)
+            ->with(['fromRoom', 'toRoom', 'asset'])
+            ->get();
+    }
+
     public function all()
     {
         return $this->model->all();
@@ -63,7 +78,13 @@ class MovementRepository
 
     public function create($data)
     {
-        return $this->model->create($data);
+        return $this->model->create([
+            'asset_id' => $data['asset_id'],
+            'from_room_id' => $data['from_room_id'],
+            'to_room_id' => $data['to_room_id'],
+            'qty' => $data['qty'],
+            'condition' => $data['condition'],
+        ]);
     }
 
     public function update($id, $data)
@@ -74,6 +95,7 @@ class MovementRepository
             'from_room_id' => $data['from_room_id'],
             'to_room_id' => $data['to_room_id'],
             'qty' => $data['qty'],
+            'condition' => $data['condition'],
         ]);
         return $movement;
     }

@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_type_id')->constrained();
-            // $table->foreignId('room_id')->constrained();
-            $table->string('item_code')->unique();
+            $table->foreignId('asset_type_id')->constrained()->onDelete('cascade');
+            $table->string('item_code');
             $table->string('name');
             $table->date('acquition');
             $table->integer('total');
             $table->datetime('last_move_date')->nullable();
-            $table->enum('condition', ['good', 'bad']);
             $table->text('note')->nullable();
             $table->timestamps();
         });

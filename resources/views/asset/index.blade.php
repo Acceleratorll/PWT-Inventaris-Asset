@@ -15,7 +15,6 @@
             <th>Code</th>
             <th>Type</th>
             <th>Total</th>
-            <th>Keadaan</th>
             <th>Barang Diterima</th>
             <th>Terakhir Pindah</th>
             <th>Terakhir Update</th>
@@ -31,7 +30,6 @@
             <th>Code</th>
             <th>Type</th>
             <th>Total</th>
-            <th>Keadaan</th>
             <th>Barang Diterima</th>
             <th>Terakhir Pindah</th>
             <th>Terakhir Update</th>
@@ -78,7 +76,6 @@ $(document).ready(function() {
         { data: 'code', name: 'code' },
         { data: 'type', name: 'type' },
         { data: 'total', name: 'total' },
-        { data: 'condition', name: 'condition' },
         { data: 'acquition', name: 'acquition' },
         { data: 'last_move', name: 'last_move' },
         { data: 'formatted_updated_at', name: 'formatted_updated_at' },

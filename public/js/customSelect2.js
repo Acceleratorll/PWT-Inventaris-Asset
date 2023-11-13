@@ -16,7 +16,7 @@ function selectInput(element, url, placeholder) {
             cache: true,
         },
         placeholder: placeholder,
-        minimumInputLength: 1,
+        minimumInputLength: 0,
         width: "resolve",
     });
 }

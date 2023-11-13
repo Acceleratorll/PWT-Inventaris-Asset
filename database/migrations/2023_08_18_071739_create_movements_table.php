@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained();
-            $table->unsignedBigInteger('from_room_id');
+            $table->unsignedBigInteger('from_room_id')->nullable();
             $table->unsignedBigInteger('to_room_id');
             $table->integer('qty');
+            $table->enum('condition', ['good', 'bad']);
             $table->timestamps();
 
-            $table->foreign('from_room_id')->references('id')->on('rooms');
-            $table->foreign('to_room_id')->references('id')->on('rooms');
+            $table->foreign('from_room_id')->references('id')->on('rooms')->onDelete('cascade');
+            $table->foreign('to_room_id')->references('id')->on('rooms')->onDelete('cascade');
         });
     }
 

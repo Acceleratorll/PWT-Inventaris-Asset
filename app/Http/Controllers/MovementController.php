@@ -35,7 +35,10 @@ class MovementController extends Controller
     public function store(MovementRequest $movementRequest)
     {
         $input = $movementRequest->validated();
-        $this->movementService->create($input);
+        $move = $this->movementService->move($input);
+        if ($move) {
+            $this->movementService->create($input);
+        }
         return redirect()->route('admin.movements.index');
     }
 

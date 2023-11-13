@@ -19,6 +19,16 @@ class AssetRepository
         return $this->model->with('asset_type', 'rooms', 'movements')->findOrFail($id);
     }
 
+    public function findByCode($code)
+    {
+        return $this->model->with('asset_type', 'rooms', 'movements')->where('item_code', $code)->first();
+    }
+
+    public function getPivotByIdAndRoomId($asset_id, $room_id)
+    {
+        return $this->find($asset_id)->rooms()->where('room_id', $room_id);
+    }
+
     public function search($term)
     {
         return $this->model->with('asset_type', 'rooms', 'movements')
@@ -26,7 +36,6 @@ class AssetRepository
             ->orWhere('item_code', 'LIKE', '%' . $term . '%')
             ->orWhere('acquition', 'LIKE', '%' . $term . '%')
             ->orWhere('total', 'LIKE', '%' . $term . '%')
-            ->orWhere('condition', 'LIKE', '%' . $term . '%')
             ->orWhere('last_move_date', 'LIKE', '%' . $term . '%')
             ->orWhere('note', 'LIKE', '%' . $term . '%')
             ->orWhereHas('asset_type', function ($query) use ($term) {
@@ -60,7 +69,6 @@ class AssetRepository
             'acquition' => $data['acquition'],
             'total' => $data['total'],
             'last_move_date' => $data['last_move_date'],
-            'condition' => $data['condition'],
             'note' => $data['note'],
         ]);
         return $asset;

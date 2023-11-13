@@ -10,16 +10,16 @@ class AssetService
 {
     protected $repository;
     protected $roomService;
+    protected $movementService;
 
-    public function __construct(AssetRepository $repository, RoomService $roomService)
-    {
+    public function __construct(
+        AssetRepository $repository,
+        RoomService $roomService,
+        MovementService $movementService
+    ) {
         $this->repository = $repository;
         $this->roomService = $roomService;
-    }
-
-    public function getById($id)
-    {
-        return $this->repository->find($id);
+        $this->movementService = $movementService;
     }
 
     public function tableAll()
@@ -102,17 +102,133 @@ class AssetService
     public function create($data)
     {
         $asset = $this->repository->create($data);
-        $room = $this->roomService->find(1);
-        return $asset->rooms()->attach($room, ['qty' => $data['total']]);
+
+        foreach ($data['room_id'] as $roomId) {
+            $this->attach($asset, $data, $roomId);
+
+            $this->MoveData($asset, $data, $roomId);
+        }
+    }
+
+    public function addStock($data)
+    {
+        $asset = $this->repository->find($data['asset_id']);
+
+        if (!$asset) {
+            return redirect()->back()->with('error', 'Asset tidak ditemukan, Mungkin terhapus atau terjadi perubahan');
+        }
+
+        $this->populateData($asset, $data);
+        $asset = $asset->update(['total' => $asset->total + $data['total']]);
+        if ($asset) {
+            return redirect()->back()->with('error', 'Something went wrong ! Tidak bisa update total');
+        }
+        return true;
     }
 
     public function update($id, $data)
     {
-        return $this->repository->update($id, $data);
+        $asset = $this->repository->update($id, $data);
+
+        $asset->rooms()->detach();
+
+        foreach ($data['room_id'] as $roomId) {
+            $this->attach($asset, $data, $roomId);
+
+            $movements = $this->movementService->getByAssetAndFromRoom($asset->id, null);
+            foreach ($movements as $movement) {
+                $movement->delete();
+            }
+
+            $this->MoveData($asset, $data, $roomId);
+        }
     }
 
     public function delete($id)
     {
+        $movements = $this->movementService->getByAssetAndFromRoom($id, null);
+        foreach ($movements as $movement) {
+            $movement->delete();
+        }
         return $this->repository->delete($id);
+    }
+
+    private function attach($asset, $data, $roomId)
+    {
+        $room = $this->roomService->find($roomId);
+
+        $asset->rooms()->attach($room, [
+            'qty' => $data['qty_good'][$roomId],
+            'condition' => 'good',
+        ]);
+
+        $asset->rooms()->attach($room, [
+            'qty' => $data['qty_bad'][$roomId],
+            'condition' => 'bad',
+        ]);
+    }
+
+    private function MoveData($asset, $data, $roomId)
+    {
+        $moveDataGood = [
+            'asset_id' => $asset->id,
+            'from_room_id' => null,
+            'to_room_id' => $roomId,
+            'qty' => $data['qty_good'][$roomId],
+            'condition' => 'good',
+        ];
+
+        $moveDataBad = [
+            'asset_id' => $asset->id,
+            'from_room_id' => null,
+            'to_room_id' => $roomId,
+            'qty' => $data['qty_bad'][$roomId],
+            'condition' => 'bad',
+        ];
+
+        $this->movementService->create($moveDataGood);
+        $this->movementService->create($moveDataBad);
+    }
+
+    public function checkQty($totalGood, $totalBad, $totalAll)
+    {
+        if (array_sum($totalGood) + array_sum($totalBad) > $totalAll || array_sum($totalGood) + array_sum($totalBad) < $totalAll) {
+            return false;
+        }
+        return true;
+    }
+
+    private function populateData($asset, $data)
+    {
+        foreach ($data['room_id'] as $roomId) {
+            $room = $this->roomService->find($roomId);
+            $existingRoom = $asset->rooms()->where('room_id', $roomId)->exists();
+
+            if ($existingRoom === false) {
+                $asset->rooms()->attach($room, [
+                    'qty' => $data['qty_good'][$roomId],
+                    'condition' => 'good',
+                ]);
+
+                $asset->rooms()->attach($room, [
+                    'qty' => $data['qty_bad'][$roomId],
+                    'condition' => 'bad',
+                ]);
+            } else {
+                $pivotGood = $asset->rooms()->where('condition', 'good')->where('asset_id', $asset->id)->first();
+                $asset->rooms()->updateExistingPivot($pivotGood, ['qty' => $pivotGood->pivot->qty + $data['qty_good'][$roomId]]);
+
+                $pivotBad = $asset->rooms()->where('condition', 'bad')->where('asset_id', $asset->id)->first();
+                $asset->rooms()->updateExistingPivot($pivotBad, ['qty' => $pivotBad->pivot->qty + $data['qty_bad'][$roomId]]);
+            }
+
+            $this->MoveData($asset, $data, $roomId);
+        }
+    }
+
+    public function getPivotByCondition($asset_id, $room_id, $condition)
+    {
+        $pivot = $this->repository->getPivotByIdAndRoomId($asset_id, $room_id);
+        return $pivot->where('condition', $condition)->first();
     }
 }

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('asset_room', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id')->constrained();
-            $table->foreignId('room_id')->constrained();
+            $table->foreignId('asset_id')->constrained()->onDelete('cascade');
+            $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->integer('qty');
+            $table->enum('condition', ['good', 'bad']);
             $table->timestamps();
         });
     }

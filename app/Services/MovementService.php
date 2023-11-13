@@ -60,6 +60,16 @@ class MovementService
             ->make(true);
     }
 
+    public function getFromRoomNull()
+    {
+        return $this->movementRepository->getNullFromRoom();
+    }
+
+    public function getByAssetAndFromRoom($asset, $from_room)
+    {
+        return $this->movementRepository->getByAssetAndFromRoom($asset, $from_room);
+    }
+
     public function move($datas)
     {
         $fromRoom = $this->roomRepository->find($datas['from_room_id']);
@@ -79,15 +89,13 @@ class MovementService
             return redirect()->back()->with('error', 'Insufficient assets in the origin room.');
         }
 
-        if ($pivotDestination) {
+        if ($pivotDestination && $pivotDestination->pivot->condition === $datas['condition']) {
             $toRoom->assets()->updateExistingPivot($asset, ['qty' => $pivotDestination->pivot->qty + $datas['qty']]);
         } else {
-            $toRoom->assets()->attach($asset, ['qty' => $datas['qty']]);
+            $toRoom->assets()->attach($asset, ['qty' => $datas['qty'], 'condition' => $datas['condition']]);
         }
 
         $fromRoom->assets()->updateExistingPivot($asset, ['qty' => $pivotOrigin->pivot->qty - $datas['qty']]);
-
-        return $this->movementRepository->create($datas);
     }
 
 
@@ -103,7 +111,7 @@ class MovementService
 
     public function create($data)
     {
-        return $this->move($data);
+        return $this->movementRepository->create($data);
     }
 
     public function search($term)
@@ -132,6 +140,9 @@ class MovementService
 
         if ($pivotOrigin->pivot->qty < abs($qtyDifference)) {
             return back()->with('error', 'Insufficient assets in the origin room.');
+        } else if ($data['condition'] !== $pivotDestination->pivot->condition) {
+            $asset = $this->assetRepository->find($movement->asset_id);
+            return $toRoom->assets()->attach($asset, ['qty' => $data['qty'], 'condition' => $data['condition']]);
         }
 
         // Update the asset qty in the origin room

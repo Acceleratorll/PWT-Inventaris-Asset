@@ -14,7 +14,14 @@ class AssetRoomSeeder extends Seeder
             [
                 'asset_id' => 1,
                 'room_id' => 1,
-                'qty' => 100,
+                'qty' => 50,
+                'condition' => 'good',
+            ],
+            [
+                'asset_id' => 1,
+                'room_id' => 1,
+                'qty' => 50,
+                'condition' => 'bad',
             ],
         ];
 

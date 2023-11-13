@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,6 +25,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/types', AssetTypeController::class);
     Route::resource('/movements', MovementController::class);
     Route::resource('/rooms', RoomController::class);
+
+    Route::prefix('/asset')->name('asset.')->group(function () {
+        Route::resource('/stock', StockController::class);
+        Route::get('/pivot', [StockController::class, 'getPivotByIdAndRoomIds'])->name('room.pivot');
+    });
 
     Route::prefix('/table')->name('table.')->group(function () {
         Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
