@@ -50,8 +50,8 @@
                 <div class="form-group">
                     <label for="room_id">Pilih Ruangan</label>
                     <select class="form-control select2" name="room_id[]" id="room_id" multiple required>
-                        @foreach ($asset->rooms()->get()->unique('id') as $room)
-                        <option value="{{ $room->id }}" selected>{{ $room->name }}</option>
+                        @foreach ($asset->assetRoomConditions->unique('room_id') as $room)
+                        <option value="{{ $room->room_id }}" selected>{{ $room->room->name }}</option>
                         @endforeach
                     </select>
                 </div>

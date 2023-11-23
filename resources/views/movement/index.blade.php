@@ -15,6 +15,7 @@
             <th>Dari</th>
             <th>Ke</th>
             <th>Qty</th>
+            <th>Kondisi</th>
             <th>Terakhir Update</th>
             <th>Di Buat</th>
             <th>Actions</th>
@@ -27,6 +28,7 @@
             <th>Dari</th>
             <th>Ke</th>
             <th>Qty</th>
+            <th>Kondisi</th>
             <th>Terakhir Update</th>
             <th>Di Buat</th>
             <th>Actions</th>
@@ -69,6 +71,7 @@ $(document).ready(function() {
         { data: 'fromRoom', name: 'fromRoom' },
         { data: 'toRoom', name: 'toRoom' },
         { data: 'qty', name: 'qty' },
+        { data: 'condition', name: 'condition' },
         { data: 'formatted_updated_at', name: 'formatted_updated_at' },
         { data: 'formatted_created_at', name: 'formatted_created_at' },
         { data: 'action', name: 'action', orderable: false, searchable: false },

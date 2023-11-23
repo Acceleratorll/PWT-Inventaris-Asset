@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_room', function (Blueprint $table) {
+        Schema::create('asset_room_condition', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained()->onDelete('cascade');
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
+            $table->foreignId('condition_id')->constrained();
             $table->integer('qty');
-            $table->enum('condition', ['good', 'bad']);
             $table->timestamps();
         });
     }

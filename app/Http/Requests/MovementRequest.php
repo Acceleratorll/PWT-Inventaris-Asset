@@ -25,6 +25,7 @@ class MovementRequest extends FormRequest
             'asset_id' => 'required',
             'from_room_id' => 'required',
             'to_room_id' => 'required',
+            'condition_id' => 'required',
             'qty' => 'required',
         ];
     }

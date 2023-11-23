@@ -17,7 +17,17 @@
                     <select class="form-control" type="text" name="asset_id" id="asset_id" required></select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="condition_id">Kondisi</label>
+                    <select class="form-control" type="text" name="condition_id" id="condition_id" required>
+                        <option value="" selected disabled>Pilih Kondisi</option>
+                        <option value="1">Good</option>
+                        <option value="2">Bad</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="qty">QTY</label>
                     <input type="number" class="form-control" placeholder="Masukkan Jumlah Asset" name="qty" id="qty" required/>

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AssetRequest;
-use App\Http\Requests\MovementRequest;
+use App\Models\AssetRoomCondition;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\RoomRepository;
+use App\Services\AssetRoomConditionService;
 use App\Services\AssetService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,16 +15,16 @@ use Illuminate\View\View;
 class AssetController extends Controller
 {
     protected $assetService;
-    protected $assetTypeRepositories;
+    protected $assetRoomConditionService;
     protected $roomRepositories;
 
     public function __construct(
         AssetService $assetService,
-        AssetTypeRepository $assetTypeRepository,
+        AssetRoomConditionService $assetRoomConditionService,
         RoomRepository $roomRepository
     ) {
         $this->assetService = $assetService;
-        $this->assetTypeRepositories = $assetTypeRepository;
+        $this->assetRoomConditionService = $assetRoomConditionService;
         $this->roomRepositories = $roomRepository;
     }
 
@@ -46,15 +47,14 @@ class AssetController extends Controller
     public function show($id): JsonResponse
     {
         $asset = $this->assetService->find($id);
-        $asset = $asset->rooms()->get()->unique('id');
+        $asset = $asset->assetRoomConditions;
         return response()->json($asset);
     }
 
     public function create(): View
     {
-        $types = $this->assetTypeRepositories->all();
         $rooms = $this->roomRepositories->all();
-        return view('asset.create', compact(['types', 'rooms']));
+        return view('asset.create', compact(['rooms']));
     }
 
     public function store(AssetRequest $assetRequest)
@@ -64,7 +64,22 @@ class AssetController extends Controller
         if ($checkTotal === false) {
             return redirect()->back()->with('error', 'Pastikan memasukkan Total yang benar');
         }
-        $this->assetService->create($input);
+        $asset = $this->assetService->create($input);
+        foreach ($input['room_id'] as $roomId) {
+            $this->assetRoomConditionService->create([
+                'asset_id' => $asset->id,
+                'room_id' => $roomId,
+                'condition_id' => 1,
+                'qty' => $input['qty_good'][$roomId],
+            ]);
+
+            $this->assetRoomConditionService->create([
+                'asset_id' => $asset->id,
+                'room_id' => $roomId,
+                'condition_id' => 2,
+                'qty' => $input['qty_bad'][$roomId],
+            ]);
+        }
         return redirect()->route('admin.assets.index')->with('success' . 'Asset berhasil dibuat');
     }
 
@@ -77,15 +92,65 @@ class AssetController extends Controller
 
     public function edit($id): View
     {
-        $types = $this->assetTypeRepositories->all();
-        $rooms = $this->roomRepositories->all();
         $asset = $this->assetService->find($id);
-        return view('asset.edit', compact('asset', 'rooms', 'types'));
+        return view('asset.edit', compact('asset'));
     }
 
     public function update(AssetRequest $assetRequest, $id)
     {
         $input = $assetRequest->validated();
+
+        if ($this->assetService->checkQty($input['qty_good'], $input['qty_bad'], $input['total'])) {
+            return redirect()->back()->with('error', 'Pastikan memasukkan Total yang benar');
+        }
+
+        $oriData = $this->assetRoomConditionService->findByAsset($id)->pluck('room_id')->unique()->toArray();
+
+        $diff = array_merge(array_diff($oriData, array_map('intval', $input['room_id'])), array_diff(array_map('intval', $input['room_id']), $oriData));
+
+        if (!empty($diff)) {
+            foreach ($diff as $roomId) {
+                $item = $this->assetRoomConditionService->findByAssetRoom($id, $roomId);
+                if ($item->count() > 0) {
+                    $this->assetRoomConditionService->delete($item[0]->id);
+                    $this->assetRoomConditionService->delete($item[1]->id);
+                } else {
+                    $this->assetRoomConditionService->create([
+                        'asset_id' => $id,
+                        'room_id' => $roomId,
+                        'condition_id' => 1,
+                        'qty' => $input['qty_good'][$roomId],
+                    ]);
+
+                    $this->assetRoomConditionService->create([
+                        'asset_id' => $id,
+                        'room_id' => $roomId,
+                        'condition_id' => 2,
+                        'qty' => $input['qty_bad'][$roomId],
+                    ]);
+                }
+            }
+        }
+
+
+        foreach ($input['room_id'] as $roomId) {
+            $good = $this->assetRoomConditionService->findByAssetRoomCondition($id, $roomId, 1);
+            $this->assetRoomConditionService->update($good->id, [
+                'asset_id' => $id,
+                'room_id' => $roomId,
+                'condition_id' => 1,
+                'qty' => $input['qty_good'][$roomId],
+            ]);
+
+            $bad = $this->assetRoomConditionService->findByAssetRoomCondition($id, $roomId, 2);
+            $this->assetRoomConditionService->update($bad->id, [
+                'asset_id' => $id,
+                'room_id' => $roomId,
+                'condition_id' => 2,
+                'qty' => $input['qty_bad'][$roomId],
+            ]);
+        }
+
         $this->assetService->update($id, $input);
         return redirect()->route('admin.assets.index')->with('success', 'Asset has been successfully updated!');
     }

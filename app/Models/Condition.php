@@ -7,14 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+class Condition extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'name',
-        'location',
-    ];
 
     public function assetRoomConditions(): HasMany
     {

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained();
-            $table->unsignedBigInteger('from_room_id')->nullable();
+            $table->foreignId('condition_id')->constrained();
+            $table->unsignedBigInteger('from_room_id');
             $table->unsignedBigInteger('to_room_id');
             $table->integer('qty');
-            $table->enum('condition', ['good', 'bad']);
             $table->timestamps();
 
             $table->foreign('from_room_id')->references('id')->on('rooms')->onDelete('cascade');

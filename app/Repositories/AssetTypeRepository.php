@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\AssetType;
+use Illuminate\Database\Eloquent\Collection;
 
 class AssetTypeRepository
 {
@@ -14,12 +15,12 @@ class AssetTypeRepository
         $this->model = $model;
     }
 
-    public function find($id)
+    public function find($id): AssetType
     {
         return $this->model->find($id);
     }
 
-    public function search($term)
+    public function search($term): Collection
     {
         return $this->model
             ->where('name', 'LIKE', '%' . $term . '%')
@@ -27,7 +28,7 @@ class AssetTypeRepository
             ->get();
     }
 
-    public function all()
+    public function all(): Collection
     {
         return $this->model->with('assets')->get();
     }
@@ -37,12 +38,12 @@ class AssetTypeRepository
         return $this->model->with('assets')->paginate($no);
     }
 
-    public function create($data)
+    public function create($data): AssetType
     {
         return $this->model->create($data);
     }
 
-    public function update($id, $data)
+    public function update($id, $data): AssetType
     {
         $type = $this->model->find($id);
         $type->update([
@@ -52,7 +53,7 @@ class AssetTypeRepository
         return $type;
     }
 
-    public function delete($id)
+    public function delete($id): AssetType
     {
         $type = $this->model->find($id);
         return $type->delete();

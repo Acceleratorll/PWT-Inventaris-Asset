@@ -11,15 +11,18 @@ class AssetService
     protected $repository;
     protected $roomService;
     protected $movementService;
+    protected $assetRoomConditionService;
 
     public function __construct(
         AssetRepository $repository,
-        RoomService $roomService,
-        MovementService $movementService
+        // AssetRoomConditionService $assetRoomConditionService,
+        // RoomService $roomService,
+        // MovementService $movementService
     ) {
         $this->repository = $repository;
-        $this->roomService = $roomService;
-        $this->movementService = $movementService;
+        // $this->roomService = $roomService;
+        // $this->assetRoomConditionService = $assetRoomConditionService;
+        // $this->movementService = $movementService;
     }
 
     public function tableAll()
@@ -101,13 +104,7 @@ class AssetService
 
     public function create($data)
     {
-        $asset = $this->repository->create($data);
-
-        foreach ($data['room_id'] as $roomId) {
-            $this->attach($asset, $data, $roomId);
-
-            $this->MoveData($asset, $data, $roomId);
-        }
+        return $this->repository->create($data);
     }
 
     public function addStock($data)
@@ -128,28 +125,11 @@ class AssetService
 
     public function update($id, $data)
     {
-        $asset = $this->repository->update($id, $data);
-
-        $asset->rooms()->detach();
-
-        foreach ($data['room_id'] as $roomId) {
-            $this->attach($asset, $data, $roomId);
-
-            $movements = $this->movementService->getByAssetAndFromRoom($asset->id, null);
-            foreach ($movements as $movement) {
-                $movement->delete();
-            }
-
-            $this->MoveData($asset, $data, $roomId);
-        }
+        return $this->repository->update($id, $data);
     }
 
     public function delete($id)
     {
-        $movements = $this->movementService->getByAssetAndFromRoom($id, null);
-        foreach ($movements as $movement) {
-            $movement->delete();
-        }
         return $this->repository->delete($id);
     }
 
@@ -157,42 +137,48 @@ class AssetService
     {
         $room = $this->roomService->find($roomId);
 
-        $asset->rooms()->attach($room, [
+        $asset->assetRoomConditions()->create([
+            'room_id' => $room->id,
             'qty' => $data['qty_good'][$roomId],
-            'condition' => 'good',
+            'condition_id' => 1,
         ]);
 
-        $asset->rooms()->attach($room, [
+        $asset->assetRoomConditions()->create([
+            'room_id' => $room->id,
             'qty' => $data['qty_bad'][$roomId],
-            'condition' => 'bad',
+            'condition_id' => 2,
         ]);
     }
 
     private function MoveData($asset, $data, $roomId)
     {
-        $moveDataGood = [
-            'asset_id' => $asset->id,
-            'from_room_id' => null,
-            'to_room_id' => $roomId,
-            'qty' => $data['qty_good'][$roomId],
-            'condition' => 'good',
-        ];
-
         $moveDataBad = [
-            'asset_id' => $asset->id,
-            'from_room_id' => null,
-            'to_room_id' => $roomId,
-            'qty' => $data['qty_bad'][$roomId],
-            'condition' => 'bad',
+            [
+                'asset_id' => $asset->id,
+                'from_room_id' => 1,
+                'to_room_id' => $roomId,
+                'qty' => $data['qty_good'][$roomId],
+                'condition' => 'good',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'asset_id' => $asset->id,
+                'from_room_id' => 1,
+                'to_room_id' => $roomId,
+                'qty' => $data['qty_bad'][$roomId],
+                'condition' => 'bad',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
-        $this->movementService->create($moveDataGood);
-        $this->movementService->create($moveDataBad);
+        $this->movementService->insert($moveDataBad);
     }
 
     public function checkQty($totalGood, $totalBad, $totalAll)
     {
-        if (array_sum($totalGood) + array_sum($totalBad) > $totalAll || array_sum($totalGood) + array_sum($totalBad) < $totalAll) {
+        if (array_sum($totalGood) + array_sum($totalBad) !== $totalAll) {
             return false;
         }
         return true;
@@ -228,7 +214,6 @@ class AssetService
 
     public function getPivotByCondition($asset_id, $room_id, $condition)
     {
-        $pivot = $this->repository->getPivotByIdAndRoomId($asset_id, $room_id);
-        return $pivot->where('condition', $condition)->first();
+        return  $this->assetRoomConditionService->findByAssetRoomCondition($asset_id, $room_id, $condition);
     }
 }

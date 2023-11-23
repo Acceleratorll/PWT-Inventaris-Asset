@@ -29,7 +29,7 @@
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
             }).then((result) => {
-                console.log(result);
+                console.log(result, defaultId);
                 if (result.value == true) {
                     console.log('confirmed');
                     $.ajax({
@@ -69,8 +69,8 @@
                 success: function (response) {
                     console.log(response);
                     var content = '<ul>';
-                    $.each(response, function(index, room) {
-                        content += '<li>Rooms ' + room.name + ' jumlah asset: '+ room.pivot.qty +'</li>';
+                    $.each(response, function(index, data) {
+                        content += '<li>Rooms ' + data.room.name + ' Jumlah : '+ data.qty +' | '+data.condition.name+'</li>';
                         content += '<div class="divider"></div>';
                     });
                     content += '</ul>';

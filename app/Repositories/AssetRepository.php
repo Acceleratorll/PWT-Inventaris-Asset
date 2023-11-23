@@ -16,12 +16,12 @@ class AssetRepository
 
     public function find($id)
     {
-        return $this->model->with('asset_type', 'rooms', 'movements')->findOrFail($id);
+        return $this->model->with('asset_type', 'assetRoomConditions.room', 'assetRoomConditions.condition', 'movements')->findOrFail($id);
     }
 
     public function findByCode($code)
     {
-        return $this->model->with('asset_type', 'rooms', 'movements')->where('item_code', $code)->first();
+        return $this->model->with('asset_type', 'assetRoomConditions', 'movements')->where('item_code', $code)->first();
     }
 
     public function getPivotByIdAndRoomId($asset_id, $room_id)
@@ -31,7 +31,7 @@ class AssetRepository
 
     public function search($term)
     {
-        return $this->model->with('asset_type', 'rooms', 'movements')
+        return $this->model->with('asset_type', 'assetRoomConditions', 'movements')
             ->where('name', 'LIKE', '%' . $term . '%')
             ->orWhere('item_code', 'LIKE', '%' . $term . '%')
             ->orWhere('acquition', 'LIKE', '%' . $term . '%')
@@ -46,7 +46,7 @@ class AssetRepository
 
     public function all()
     {
-        return $this->model->with('asset_type', 'rooms')->get();
+        return $this->model->with('asset_type', 'assetRoomConditions')->get();
     }
 
     public function paginate(int $no)

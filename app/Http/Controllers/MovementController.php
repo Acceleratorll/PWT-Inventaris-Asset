@@ -36,10 +36,11 @@ class MovementController extends Controller
     {
         $input = $movementRequest->validated();
         $move = $this->movementService->move($input);
-        if ($move) {
-            $this->movementService->create($input);
+        if (!$move) {
+            return redirect()->back()->with('error', 'Movement created failed');
         }
-        return redirect()->route('admin.movements.index');
+        $this->movementService->create($input);
+        return redirect()->route('admin.movements.index')->with('success', 'Movements successfully created');
     }
 
     public function search(Request $request)

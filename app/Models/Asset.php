@@ -28,9 +28,9 @@ class Asset extends Model
         return $this->belongsTo(AssetType::class);
     }
 
-    public function rooms(): BelongsToMany
+    public function assetRoomConditions(): HasMany
     {
-        return $this->belongsToMany(Room::class, 'asset_room')->withPivot('qty','condition')->withTimestamps();
+        return $this->hasMany(AssetRoomCondition::class);
     }
 
     public function movements(): HasMany

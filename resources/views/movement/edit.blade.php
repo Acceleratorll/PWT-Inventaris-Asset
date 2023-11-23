@@ -20,7 +20,17 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="condition">Kondisi</label>
+                    <select class="form-control" type="text" name="condition" id="condition" required>
+                        <option value="{{ $movement->condition }}" selected>{{ $movement->condition }}</option>
+                        <option value="good">good</option>
+                        <option value="bad">bad</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="qty">QTY</label>
                     <input type="number" class="form-control" value="{{ $movement->qty }}" placeholder="Masukkan Jumlah Asset" name="qty" id="qty" required/>
@@ -32,7 +42,9 @@
                 <div class="form-group">
                     <label for="from_room_id">Dari Ruangan</label>
                     <select class="form-control select2" name="from_room_id" id="from_room_id" required>
+                        @if ($movement->from_room_id)
                         <option value="{{ $movement->from_room_id }}" selected>{{ $movement->fromRoom->name }}</option>
+                        @endif
                     </select>
                 </div>
             </div>
@@ -40,7 +52,9 @@
                 <div class="form-group">
                     <label for="to_room_id">Ke Ruangan</label>
                     <select class="form-control select2" name="to_room_id" id="to_room_id" required>
+                        @if ($movement->to_room_id)
                         <option value="{{ $movement->to_room_id }}" selected>{{ $movement->toRoom->name }}</option>
+                        @endif
                     </select>
                 </div>
             </div>

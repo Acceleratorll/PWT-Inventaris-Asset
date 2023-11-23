@@ -3,21 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StockRequest;
+use App\Services\AssetRoomConditionService;
 use App\Services\AssetService;
 use App\Services\MovementService;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
+    protected $assetRoomConditionService;
     protected $assetService;
     protected $movementService;
 
     public function __construct(
         MovementService $movementService,
         AssetService $assetService,
+        AssetRoomConditionService $assetRoomConditionService,
     ) {
         $this->movementService = $movementService;
         $this->assetService = $assetService;
+        $this->assetRoomConditionService = $assetRoomConditionService;
     }
 
     public function index()
@@ -38,12 +42,12 @@ class StockController extends Controller
         $qty = [];
 
         foreach ($room_ids as $room_id) {
-            $pivotGood = $this->assetService->getPivotByCondition($asset_id, $room_id, 'good');
-            $pivotBad = $this->assetService->getPivotByCondition($asset_id, $room_id, 'bad');
+            $pivotGood = $this->assetRoomConditionService->findByAssetRoomCondition($asset_id, $room_id, 1);
+            $pivotBad = $this->assetRoomConditionService->findByAssetRoomCondition($asset_id, $room_id, 2);
 
             $qty[$room_id] = [
-                'qty_good' => $pivotGood->pivot->qty ?? 0,
-                'qty_bad' => $pivotBad->pivot->qty ?? 0,
+                'qty_good' => $pivotGood->qty ?? 0,
+                'qty_bad' => $pivotBad->qty ?? 0,
             ];
         }
 
@@ -53,11 +57,11 @@ class StockController extends Controller
     public function store(StockRequest $stockRequest)
     {
         $input = $stockRequest->validated();
-        $checkTotal = $this->assetService->checkQty($input['qty_good'], $input['qty_bad'], $input['total']);
-        if ($checkTotal === false) {
+        if (array_sum($input['qty_good']) + array_sum($input['qty_bad']) > $input['total'] || array_sum($input['qty_good']) + array_sum($input['qty_bad']) < $input['total']) {
             return redirect()->back()->with('error', 'Pastikan memasukkan Total yang benar');
         }
         $this->assetService->addStock($input);
         return redirect()->route('admin.assets.index')->with('success', 'Stock berhasil ditambah');
     }
+
 }
