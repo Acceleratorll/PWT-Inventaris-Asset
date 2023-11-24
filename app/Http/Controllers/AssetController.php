@@ -99,8 +99,9 @@ class AssetController extends Controller
     public function update(AssetRequest $assetRequest, $id)
     {
         $input = $assetRequest->validated();
+        $checkQty = $this->assetService->checkQty($input['qty_good'], $input['qty_bad'], $input['total']);
 
-        if ($this->assetService->checkQty($input['qty_good'], $input['qty_bad'], $input['total'])) {
+        if ($checkQty === false) {
             return redirect()->back()->with('error', 'Pastikan memasukkan Total yang benar');
         }
 

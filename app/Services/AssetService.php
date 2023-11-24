@@ -178,10 +178,7 @@ class AssetService
 
     public function checkQty($totalGood, $totalBad, $totalAll)
     {
-        if (array_sum($totalGood) + array_sum($totalBad) !== $totalAll) {
-            return false;
-        }
-        return true;
+        return array_sum($totalGood) + array_sum($totalBad) !== $totalAll;
     }
 
     private function populateData($asset, $data)

@@ -31,7 +31,6 @@
             }).then((result) => {
                 console.log(result);
                 if (result.value == true) {
-                    console.log('confirmed');
                     $.ajax({
                         type: 'POST',
                         url: `{{ route("admin.rooms.destroy", ["room" => ":roomId"]) }}`.replace(':roomId', defaultId),
