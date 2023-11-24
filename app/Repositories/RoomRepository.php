@@ -15,14 +15,15 @@ class RoomRepository
         $this->model = $model;
     }
 
-    public function find($id): Room
+    public function find($id)
     {
-        return $this->model->find($id);
+        return $this->model->with('assetRoomConditions.asset', 'assetRoomConditions.condition')->find($id);
     }
 
     public function search($term): Collection
     {
         return $this->model
+            ->with('assetRoomConditions.asset', 'assetRoomConditions.condition')
             ->where('name', 'LIKE', '%' . $term . '%')
             ->orWhere('location', 'LIKE', '%' . $term . '%')
             ->get();
@@ -30,12 +31,12 @@ class RoomRepository
 
     public function all(): Collection
     {
-        return $this->model->all();
+        return $this->model->with('assetRoomConditions.asset', 'assetRoomConditions.condition')->get();
     }
 
     public function paginate()
     {
-        return $this->model->with('assets')->paginate(10);
+        return $this->model->with('assetRoomConditions.asset', 'assetRoomConditions.condition')->paginate(10);
     }
 
     public function create($data): Room
@@ -45,7 +46,7 @@ class RoomRepository
 
     public function update($id, $data): Room
     {
-        $room = $this->model->find($id);
+        $room = $this->find($id);
         $room->update([
             'name' => $data['name'],
             'location' => $data['location'],
@@ -53,9 +54,8 @@ class RoomRepository
         return $room;
     }
 
-    public function delete($id): Room
+    public function delete($id)
     {
-        $room = $this->model->find($id);
-        return $room->delete();
+        return $this->find($id)->delete();
     }
 }

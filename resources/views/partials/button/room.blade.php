@@ -1,7 +1,7 @@
 <a href="{{ route('admin.rooms.edit', ['room' => $id]) }}" data-original-title="Edit" class="edit btn btn-success edit">
     Edit
 </a>
-<button id="show-outgoing-products" data-id="{{ $id }}" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+<button id="details" data-id="{{ $id }}" data-name="{{ $name }}" data-original-title="Details" class="details btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
     Details
 </button>
 
@@ -29,8 +29,9 @@
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
             }).then((result) => {
-                console.log(result);
+                console.log(result, defaultId);
                 if (result.value == true) {
+                    console.log('confirmed');
                     $.ajax({
                         type: 'POST',
                         url: `{{ route("admin.rooms.destroy", ["room" => ":roomId"]) }}`.replace(':roomId', defaultId),
@@ -54,6 +55,35 @@
                         },
                     });
                 }
+            });
+        });
+
+        $('.details').off().on('click', function(){
+            var detailButton = $(this);
+            var defaultId = detailButton.data('id');
+            var defaultName = detailButton.data('name');
+            console.log(defaultId);
+            $.ajax({
+                type: 'GET',
+                url: `{{ route("admin.rooms.show", ["room" => ":roomId"]) }}`.replace(':roomId', defaultId),
+                success: function (response) {
+                    var content = '<ul>';
+                        $.each(response, function(index, data) {
+                        content += '<li>Asset ' + data.asset.name + ' Jumlah : '+ data.qty +' | '+data.condition.name+'</li>';
+                        content += '<div class="divider"></div>';
+                    });
+                    content += '</ul>';
+                    
+                    Swal.fire({
+                        title: 'Asset List Room '+defaultName,
+                        icon: 'info',
+                        html: content,
+                    });
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Failed to See the Details of Room', 'error');
+                },
             });
         });
     });

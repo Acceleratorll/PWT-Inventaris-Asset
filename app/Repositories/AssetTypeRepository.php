@@ -17,12 +17,13 @@ class AssetTypeRepository
 
     public function find($id): AssetType
     {
-        return $this->model->find($id);
+        return $this->model->with('assets')->find($id);
     }
 
     public function search($term): Collection
     {
         return $this->model
+            ->with('assets')
             ->where('name', 'LIKE', '%' . $term . '%')
             ->orWhere('isMoveable', 'LIKE', '%' . $term . '%')
             ->get();
@@ -45,7 +46,7 @@ class AssetTypeRepository
 
     public function update($id, $data): AssetType
     {
-        $type = $this->model->find($id);
+        $type = $this->find($id);
         $type->update([
             'name' => $data['name'],
             'isMoveable' => $data['isMoveable'],
@@ -53,9 +54,8 @@ class AssetTypeRepository
         return $type;
     }
 
-    public function delete($id): AssetType
+    public function delete($id)
     {
-        $type = $this->model->find($id);
-        return $type->delete();
+        return $this->find($id)->delete();
     }
 }

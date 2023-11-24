@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoomRequest;
 use App\Repositories\RoomRepository;
 use App\Services\RoomService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -56,6 +57,13 @@ class RoomController extends Controller
         return response()->json($results);
     }
 
+    public function show($id): JsonResponse
+    {
+        $room = $this->roomService->find($id);
+        $room = $room->assetRoomConditions ?? $room;
+        return response()->json($room);
+    }
+
     public function edit($id)
     {
         $room = $this->roomRepositories->find($id);
@@ -69,7 +77,7 @@ class RoomController extends Controller
         return redirect()->route('admin.rooms.index');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->roomRepositories->delete($id);
         return redirect()->route('admin.rooms.index');
