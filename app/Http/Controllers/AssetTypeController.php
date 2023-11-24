@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AssetTypeRequest;
 use App\Repositories\AssetTypeRepository;
 use App\Services\AssetTypeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AssetTypeController extends Controller
@@ -54,6 +55,13 @@ class AssetTypeController extends Controller
         $term = $request->input('term');
         $results = $this->assetTypeRepositories->search($term);
         return response()->json($results);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $type = $this->assetTypeRepositories->find($id);
+        $type = $type->assets ?? $type;
+        return response()->json($type);
     }
 
     public function edit($id)
