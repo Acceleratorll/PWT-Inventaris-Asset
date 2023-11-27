@@ -31,7 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/assets', [AssetController::class, 'tableAll'])->name('assets');
         Route::get('/types', [AssetTypeController::class, 'tableAll'])->name('types');
         Route::get('/rooms', [RoomController::class, 'tableAll'])->name('rooms');
-        Route::get('/movements', [MovementController::class, 'tableAll'])->name('movements');
+        Route::get('/movements', [MovementController::class, 'table'])->name('movements');
     });
 
     Route::prefix('/select')->name('select.')->group(function () {

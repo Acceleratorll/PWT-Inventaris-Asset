@@ -23,10 +23,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="condition">Kondisi</label>
-                    <select class="form-control" type="text" name="condition" id="condition" required>
-                        <option value="{{ $movement->condition }}" selected>{{ $movement->condition }}</option>
-                        <option value="good">good</option>
-                        <option value="bad">bad</option>
+                    <select class="form-control" type="text" name="condition_id" id="condition_id" required>
+                        <option value="{{ $movement->condition_id }}" selected>{{ $movement->condition->name }}</option>
+                        <option value="1">Good</option>
+                        <option value="2">Bad</option>
                     </select>
                 </div>
             </div>

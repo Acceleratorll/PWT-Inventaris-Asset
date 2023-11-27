@@ -17,7 +17,7 @@ class MovementRepository
 
     public function find($id): Movement
     {
-        return $this->model->find($id);
+        return $this->model->with('fromRoom', 'toRoom', 'asset', 'condition')->find($id);
     }
 
     public function search($term): Collection
@@ -44,7 +44,7 @@ class MovementRepository
     public function getByAsset($id): Collection
     {
         return $this->model->where('asset_id', $id)
-            ->with(['fromRoom', 'toRoom', 'asset'])
+            ->with('fromRoom', 'toRoom', 'asset', 'condition')
             ->get();
     }
 
@@ -58,32 +58,33 @@ class MovementRepository
     public function getByRoomExcept($id = 2): Collection
     {
         return $this->model->where('to_room_id', '!=', $id)
-            ->with(['fromRoom', 'toRoom', 'asset']);
+            ->with('fromRoom', 'toRoom', 'asset', 'condition');
     }
 
     public function getNullFromRoom(): Collection
     {
         return $this->model->where('from_room_id', null)
-            ->with(['fromRoom', 'toRoom', 'asset'])
+            ->with('fromRoom', 'toRoom', 'asset', 'condition')
             ->get();
     }
 
     public function getByAssetAndFromRoom($asset, $from_room): Collection
     {
-        return $this->model->where('from_room_id', $from_room)
+        return $this->model
+            ->with('fromRoom', 'toRoom', 'asset', 'condition')
+            ->where('from_room_id', $from_room)
             ->where('asset_id', $asset)
-            ->with(['fromRoom', 'toRoom', 'asset'])
             ->get();
     }
 
     public function all(): Collection
     {
-        return $this->model->with('asset', 'fromRoom', 'toRoom')->get();
+        return $this->model->with('fromRoom', 'toRoom', 'asset', 'condition')->get();
     }
 
-    public function paginate($no)
+    public function paginate(int $no)
     {
-        return $this->model->with('asset', 'fromRoom', 'toRoom')->paginate($no);
+        return $this->model->with('fromRoom', 'toRoom', 'asset', 'condition')->paginate($no);
     }
 
     public function create($data): Movement
@@ -98,7 +99,7 @@ class MovementRepository
 
     public function update($id, $data): Movement
     {
-        $movement = $this->model->find($id);
+        $movement = $this->find($id);
         $movement->update([
             'asset_id' => $data['asset_id'],
             'from_room_id' => $data['from_room_id'],
@@ -109,9 +110,8 @@ class MovementRepository
         return $movement;
     }
 
-    public function delete($id): Movement
+    public function delete($id)
     {
-        $movement = $this->model->find($id);
-        return $movement->delete();
+        return $this->model->find($id)->delete();
     }
 }
